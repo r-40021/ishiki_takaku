@@ -1,2 +1,2 @@
-# ishiki_takaku
-意識が高くなるChrome拡張機能
+# 意識が高くなるChrome拡張機能
+ChromeのタブのWebサイト名をいい感じに。
