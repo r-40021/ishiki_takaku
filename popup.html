@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&family=Roboto:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+
+  <!-- CSS Reset -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+
+  <!-- Milligram CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container settings">
+    <div class="row">
+      <div class="column">
+        <h3>設定</h3>
+      </div>
+      <div class="column">
+        <div class="checkboxWrapper">
+        <input type="checkbox" id="enableCheck">
+        <label class="label-inline" for="enableCheck">「意識高い系ブラウジング」を有効にする</label>
+      </div>
+      <input class="button allTab button-clear" type="submit" value="すべてのタブに適用(リロード)" id="reload">
+      </div>
+      <div class="column"><p>設定は、ページを再読み込みしたあとに反映されます。</p></div>
+    </div>
+  </div>
+  <div class="container first">
+    <div class="row">
+      <div class="column block"><h3>利用規約</h3></div>
+      <div class="column"><p>この拡張機能を利用したことによるいかなる損害に対しても、開発者は一切の責任を負いません。</p></div>
+      <div class="culumn"><p>また、開発者は利用規約を予告なしに変更することがあります。</p></div>
+      <div class="column"><p>上記の規約に同意できる方のみ、下の「同意」ボタンをクリックしてください。</p></div>
+      <div class="column accept">
+        <a class="button" id="agreeBtn">同意</a>
+        <a class="button" id="disagreeBtn">同意しない</a>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

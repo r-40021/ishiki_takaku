@@ -1,0 +1,45 @@
+body{
+  width: 400px;
+  padding: 1.5em 0.8em;
+  font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto Sans JP',sans-serif;
+}
+.button, button, input[type='button'], input[type='reset'], input[type='submit'] {
+  font-weight: bold;
+}
+.label-inline{
+  font-weight: 300;
+  width: 90%;
+}
+.checkboxWrapper{
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+}
+.checkboxWrapper input{
+  width: 1.5rem;
+}
+.checkboxWrapper .label-inline{
+  flex: 1;
+}
+.checkboxWrapper:hover{
+  opacity: 0.5;
+}
+.allTab.button{
+  width: auto;
+  height: 2rem;
+  line-height: 1;
+  margin-bottom: 2rem;
+  padding-left: 2rem;
+}
+.accept{
+  text-align: center;
+}
+.first{
+  display: none;
+}
+body.noaccept .first{
+  display: initial;
+}
+body.noaccept .settings{
+  display: none;
+}
