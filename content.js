@@ -82,9 +82,7 @@ chrome.storage.sync.get("accept", function (result) {
 });
 
 function getRandomInt() {
-	min = Math.ceil(0);
-	max = Math.floor(siteName.length);
-	return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+	return Math.floor(Math.random() * siteName.length);
 }
 
 function setNewIcon() {

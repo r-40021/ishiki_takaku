@@ -1,6 +1,6 @@
 body{
   width: 400px;
-  padding: 1.5em 0.8em;
+  padding: 3rem 0.8rem;
   font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto Sans JP',sans-serif;
 }
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
@@ -37,8 +37,17 @@ body{
 .first{
   display: none;
 }
+.icons{
+  vertical-align: text-top;
+  margin-right: 0.3em;
+}
+.title{
+  border-bottom: 8px solid #b699c7;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+}
 body.noaccept .first{
-  display: initial;
+  display: block;
 }
 body.noaccept .settings{
   display: none;
