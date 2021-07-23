@@ -45,6 +45,7 @@ body{
   border-bottom: 8px solid #b699c7;
   padding-bottom: 4px;
   box-sizing: border-box;
+  text-indent: .15em;
 }
 body.noaccept .first{
   display: block;
