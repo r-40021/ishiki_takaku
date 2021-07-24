@@ -2,7 +2,9 @@
 ![プロモーション](https://user-images.githubusercontent.com/75155258/126740734-465cc96e-a0b1-43b1-afd8-129e332e7f6d.png)
 
 
-ChromeのタブのWebサイト名をいい感じに。
+Chrome のタブの Web サイト名を意識高く。
+
+※「意識が高い人になれる」という保証はどこにもありません。
 
 
 # 簡単に紹介
