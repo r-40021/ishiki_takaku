@@ -1,4 +1,4 @@
-const siteName = [
+let siteName = [
 	"2次方程式とは？順を追ってわかりやすく解説！",
 	"日本の人口の推移 - よろづ統計Web",
 	"【つまづきポイント】モルの攻略法 - 中高生の理科を徹底解説！",
@@ -51,31 +51,33 @@ const siteName = [
 	"超絶神コミュニケーション術！ - ビジネスは任せろ！"
 ];
 let title;
+const defaultSiteName = siteName;
 chrome.storage.sync.get("accept", function (result) {
 
 	if (result.accept) {
+		loadStorage();
 		chrome.storage.sync.get("enable", function (result2) {
 			if (result2.enable) {
 				title = siteName[getRandomInt()];
 				document.title = title;
 				deleteIcon();
 				setNewIcon();
-					const target = document.querySelector("head");
-					const config = {
-						subtree: true,
-						characterData: true,
-						childList: true
-					};
-					const observer = new MutationObserver(function (mutations) {
-						observer.disconnect();
-						document.title = title;
-						deleteIcon();
-						setNewIcon();
-						observer.observe(target, config);
-					});
-
+				const target = document.querySelector("head");
+				const config = {
+					subtree: true,
+					characterData: true,
+					childList: true
+				};
+				const observer = new MutationObserver(function () {
+					observer.disconnect();
+					document.title = title;
+					deleteIcon();
+					setNewIcon();
 					observer.observe(target, config);
-				}
+				});
+
+				observer.observe(target, config);
+			}
 		});
 	}
 
@@ -107,4 +109,28 @@ function deleteIcon() {
 			}
 		}
 	}
+}
+chrome.runtime.onMessage.addListener(function (mes) {
+	let myMessage = mes.message;
+	switch (myMessage) {
+		case "siteNameList":
+			chrome.runtime.sendMessage({ message: "ThisisSiteName", list: siteName });
+			break;
+
+		case "defaultNames":
+			chrome.runtime.sendMessage({ message: "ThisisDefaultName", list: defaultSiteName });
+			break;
+
+		case "changeStorage":
+			loadStorage();
+			break;
+	}
+});
+
+function loadStorage(){
+	chrome.storage.sync.get("siteNameList", function (result3) {
+		if (result3.siteNameList) {
+			siteName = result3.siteNameList;
+		}
+	});
 }

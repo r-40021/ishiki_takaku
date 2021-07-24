@@ -1,13 +1,23 @@
+body:not(.noaccept){
+  width: 700px;
+}
 body{
-  width: 400px;
   padding: 3rem 0.8rem;
+}
+*{
   font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'Noto Sans JP',sans-serif;
+  font-weight: 400;
+}
+h1,h2,h3,h4,h5,h6,p,li{
+  font-weight: 400;
+}
+a{
+  cursor: pointer;
 }
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
   font-weight: bold;
 }
 .label-inline{
-  font-weight: 300;
   width: 90%;
 }
 .checkboxWrapper{
@@ -41,11 +51,27 @@ body{
   vertical-align: text-top;
   margin-right: 0.3em;
 }
+.icons.center{
+  vertical-align: middle;
+}
+.head{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5em;
+}
 .title{
   border-bottom: 8px solid #b699c7;
   padding-bottom: 4px;
   box-sizing: border-box;
   text-indent: .15em;
+}
+textarea{
+  color: #606c76;
+}
+body.noaccept{
+  width: 400px;
 }
 body.noaccept .first{
   display: block;
