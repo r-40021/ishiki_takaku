@@ -4,7 +4,6 @@
 
 ChromeのタブのWebサイト名をいい感じに。
 
-※現時点では学生向けです
 
 # 簡単に紹介
 ![まるで意識の高い人のようにブラウジング](https://user-images.githubusercontent.com/75155258/126740637-7dc6f617-64f3-4306-85ce-c842d3334fec.png)
