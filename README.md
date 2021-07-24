@@ -11,5 +11,6 @@ ChromeのタブのWebサイト名をいい感じに。
 
 ![SNSを見ていても、タブは意識が高い人](https://user-images.githubusercontent.com/75155258/126740641-94e63b43-0cc4-4295-ac60-b3fefa9a9b60.png)
 
-![真面目モード、不真面目モードを簡単に切替可能](https://user-images.githubusercontent.com/75155258/126740646-c0d1ebc1-1b8d-4664-93be-aeb8c2adc2e0.png)
+![タブのタイトルを変更可能](https://user-images.githubusercontent.com/75155258/126866867-77cc48bc-ffea-4461-980f-eb168f727fe5.png)
 
+![真面目モード、不真面目モードを簡単に切替可能](https://user-images.githubusercontent.com/75155258/126866876-a0a4e9e1-9dd1-4b57-8a6e-9d802540aba5.png)
