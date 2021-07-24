@@ -67,6 +67,22 @@ a{
   box-sizing: border-box;
   text-indent: .15em;
 }
+.black{
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 99999999;
+  background-color: rgba(0,0,0,0.75);
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #fff;
+  padding: 15%;
+  flex-direction: column;
+  text-align: center;
+  display: none;
+}
 textarea{
   color: #606c76;
 }

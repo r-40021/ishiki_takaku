@@ -86,17 +86,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }, false);
 
       } else {
-        let body = document.body;
-        body.style.width = "400px";
-        body.textContent = "";
-        let sorry = document.createElement("p");
-        sorry.style.textAlign = "center";
-        sorry.textContent = "このページはブラウザによって保護されているため、拡張機能は無効になっています。";
-        let tryOther = document.createElement("p");
-        tryOther.style.textAlign = "center";
-        tryOther.textContent = "他のページで再度お試しください。";
-        body.appendChild(sorry);
-        body.appendChild(tryOther);
+           chrome.storage.sync.get("accept", function (result) {
+
+          if (result.accept !== true) {
+            document.body.classList.add("noaccept");
+          } else if (result.accept === true) {
+            document.getElementById("siteNames").textContent = "このページはブラウザによって保護されているため、拡張機能は無効になっています。\n他のページにて再度お試しください。";
+          }
+        });
+          document.getElementById("black").style.display = "flex";
+          document.body.style.pointerEvents = "none";
       }
     });
   });
