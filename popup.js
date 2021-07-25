@@ -3,8 +3,7 @@ let content;
 let edit = true;
 document.addEventListener("DOMContentLoaded", () => {
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-    chrome.storage.sync.get("hostName", function (result0) {
-      if (/http/.test(tabs[0].url) && tabs[0].url.indexOf("chrome.google.com/webstore/") === -1) {
+      if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$|chrome\:\/\//.test(tabs[0].url)) {
 
 
 
@@ -91,13 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
           if (result.accept !== true) {
             document.body.classList.add("noaccept");
           } else if (result.accept === true) {
-            document.getElementById("siteNames").textContent = "このページはブラウザによって保護されているため、拡張機能は無効になっています。\n他のページにて再度お試しください。";
+            document.getElementById("siteNames").textContent = "このページはブラウザによって保護されているため、拡張機能が無効になっています。\n他のページにて再度お試しください。";
           }
         });
           document.getElementById("black").style.display = "flex";
           document.body.style.pointerEvents = "none";
+          document.body.style.userSelect = "none";
       }
-    });
   });
 
   function resetList() {
