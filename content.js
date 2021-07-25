@@ -66,7 +66,8 @@ chrome.storage.sync.get("accept", function (result) {
 				const config = {
 					subtree: true,
 					characterData: true,
-					childList: true
+					childList: true,
+                    attributes: true, 
 				};
 				const observer = new MutationObserver(function () {
 					observer.disconnect();
