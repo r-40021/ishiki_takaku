@@ -1,7 +1,7 @@
 'use strict';
 let content;
 let edit = true;
-document.addEventListener("DOMContentLoaded", () => {
+
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$|chrome\:\/\//.test(tabs[0].url)) {
 
@@ -51,7 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("reload").addEventListener("click", () => {
           chrome.tabs.query({}, (tabs) => {
             tabs.forEach(element => {
-              chrome.tabs.reload(element.id, false);
+                 if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$|chrome\:\/\//.test(element.url)) {
+                    chrome.tabs.reload(element.id, false);
+                 }
             });
           });
         }, false);
@@ -59,9 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let nameContent;
         document.getElementById("siteNames").addEventListener("input", () => {
           nameContent = document.getElementById("siteNames").value;
+          nameContent = nameContent.trim();
+          nameContent = nameContent.replace(/^\s*$(?:\r\n?|\n)/gm,"");
           if (nameContent) {
-            nameContent = nameContent.trim();
-            nameContent = nameContent.replace(/^\s*$(?:\r\n?|\n)/gm,"");
             let siteNameList = nameContent.split("\n");
             chrome.storage.sync.set({ "siteNameList": siteNameList });
             chrome.tabs.query({}, (tabs) => {
@@ -105,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
       chrome.tabs.sendMessage(activeId, { message: 'defaultNames' });
     });
   }
-}, false);
 
 function addMessageReceive() {
   chrome.runtime.onMessage.addListener(function (mess) {
