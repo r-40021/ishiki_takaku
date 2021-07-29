@@ -4,7 +4,7 @@ let edit = true;
 
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       
-      if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\//.test(tabs[0].url)) {
+      if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(tabs[0].url)) {
 
 
 
@@ -52,7 +52,7 @@ let edit = true;
         document.getElementById("reload").addEventListener("click", () => {
           chrome.tabs.query({}, (tabs) => {
             tabs.forEach(element => {
-                 if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\//.test(element.url)) {
+                 if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
                     chrome.tabs.reload(element.id, false);
                  }
             });
