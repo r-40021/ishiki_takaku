@@ -1,13 +1,13 @@
-body:not(.noaccept){
+body:not(.noaccept) {
   width: 700px;
 }
-body{
+body {
   padding: 3rem 0.8rem;
 }
-*{
-  font-family:  -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI",
-    "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, Meiryo,'Noto Sans JP',
-    sans-serif;
+* {
+  font-family: -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI",
+    "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, Meiryo,
+    "Noto Sans JP", sans-serif;
   font-weight: 400;
 }
 @font-face {
@@ -21,71 +21,82 @@ body{
   font-weight: bold;
   src: local("YoGothic-Bold"), local("Yu Gothic");
 }
-h1,h2,h3,h4,h5,h6,p,li{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
   font-weight: 400;
 }
-a{
+a {
   cursor: pointer;
 }
-.button, button, input[type='button'], input[type='reset'], input[type='submit'] {
+.button,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
   font-weight: bold;
 }
-.label-inline{
+.label-inline {
   width: 90%;
 }
-.checkboxWrapper{
+.checkboxWrapper {
   display: flex;
   width: 100%;
   align-items: baseline;
 }
-.checkboxWrapper input{
+.checkboxWrapper input {
   width: 1.5rem;
 }
-.checkboxWrapper .label-inline{
+.checkboxWrapper .label-inline {
   flex: 1;
 }
-.checkboxWrapper:hover{
+.checkboxWrapper:hover {
   opacity: 0.5;
 }
-.allTab.button{
+.allTab.button {
   width: auto;
   height: 2rem;
   line-height: 1;
   margin-bottom: 2rem;
   padding-left: 2rem;
 }
-.accept{
+.accept {
   text-align: center;
 }
-.first{
+.first {
   display: none;
 }
-.icons{
+.icons {
   margin-right: 0.3em;
 }
-.icons.center{
+.icons.center {
   vertical-align: middle;
 }
-.head{
+.head {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 0 0.5em;
 }
-.title{
+.title {
   border-bottom: 8px solid #b699c7;
   padding-bottom: 4px;
   box-sizing: border-box;
-  text-indent: .15em;
+  text-indent: 0.15em;
 }
-.black{
+.black {
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
   z-index: 99999999;
-  background-color: rgba(0,0,0,0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   position: fixed;
   top: 0;
   left: 0;
@@ -95,15 +106,21 @@ a{
   text-align: center;
   display: none;
 }
-textarea{
+textarea {
   color: #606c76;
 }
-body.noaccept{
+body.noaccept {
   width: 400px;
 }
-body.noaccept .first{
+body.noaccept .first {
   display: block;
 }
-body.noaccept .settings{
+body.noaccept .settings {
   display: none;
+}
+
+@media (min-width: 40rem) {
+  .row {
+    flex-direction: column;
+  }
 }
