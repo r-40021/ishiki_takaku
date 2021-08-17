@@ -56,8 +56,14 @@ chrome.storage.sync.get("accept", function (result) {
 
 	if (result.accept) {
 		loadStorage();
-		chrome.storage.sync.get("enable", function (result2) {
-			if (result2.enable) {
+        chrome.storage.sync.get("enable", function (enable) {
+            if (enable) {
+                chrome.storage.sync.remove("enable");
+            }
+        });
+		chrome.storage.sync.get("hostList", function (host) {
+            chrome.storage.sync.get("force", function (force) {
+			if (force.force === "enable" || (host.hostList.indexOf(location.host) !== -1 && force.force !== "disable")) {
 				title = siteName[getRandomInt()];
 				document.title = title;
 				deleteIcon();
@@ -79,6 +85,7 @@ chrome.storage.sync.get("accept", function (result) {
 
 				observer.observe(target, config);
 			}
+            });
 		});
 	}
 
