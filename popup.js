@@ -47,7 +47,9 @@ chrome.tabs.query({
 
         });
         chrome.storage.sync.get("hostList", function(result) {
-            enableHostList = result.hostList;
+            if(result.hostList){
+                enableHostList = result.hostList;
+            }
 
         });
         document.getElementById("disagreeBtn").addEventListener("click", () => {
@@ -198,7 +200,7 @@ function showList() {
     let hostList = [];
     chrome.tabs.query({}, tabs => {
         tabs.forEach(element => {
-            if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
+            if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
                 chrome.storage.sync.get("hostList", function(result) {
 
 
