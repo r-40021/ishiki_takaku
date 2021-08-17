@@ -90,7 +90,7 @@ input[type="submit"] {
   box-sizing: border-box;
   text-indent: 0.15em;
 }
-.black {
+.dark {
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -118,6 +118,65 @@ body.noaccept .first {
 body.noaccept .settings {
   display: none;
 }
+
+.force {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1em 0 .1em;
+    padding-left: 2em;
+    width: 100%;
+}
+.force .label-inline{
+    width: auto;
+}
+
+
+
+
+.aco {
+    padding: 0 1.0rem;
+}
+
+.aco .row, .aco .column {
+    padding: 0;
+}
+
+.aco-header {
+  display: block;
+  cursor: pointer;
+  border-bottom: #333 1px solid;
+  width: 100%;
+  height: 50px;
+    font-size: 14px;
+  line-height: 50px;
+}
+
+.aco-body {
+    border: 0;
+    overflow: hidden;
+    padding: 0;
+    max-height: 0;
+    transition: max-height .2s ease-out, border .2s ease-out, padding .2s ease-out;
+}
+.aco-body .column {
+    padding: 1em .5em;
+}
+.aco-header.open + .aco-body {
+    max-height: 100vh;
+}
+.aco-header > .arrow {
+    transform: rotate(0deg);
+    vertical-align: middle;
+    transition: transform .2s ease-out;
+    margin-left: .7em;
+    margin-right: .3em;
+}
+.aco-header.open > .arrow {
+    transform: rotate(180deg);
+}
+
+
 
 @media (min-width: 40rem) {
   .row {
