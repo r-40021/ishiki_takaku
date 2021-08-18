@@ -215,7 +215,7 @@ function showList() {
 
                         newElement.classList = "enableCheck";
                         newElement.setAttribute("target", element.id);
-                        if (result.hostList.indexOf(host) !== -1) {
+                        if (result.hostList && result.hostList.indexOf(host) !== -1) {
                             newElement.setAttribute("checked", true);
                         }
                         let newLabel = document.createElement("label");
