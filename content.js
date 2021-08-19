@@ -63,7 +63,7 @@ chrome.storage.sync.get("accept", function (result) {
         });
 		chrome.storage.sync.get("hostList", function (host) {
             chrome.storage.sync.get("force", function (force) {
-			if (force.force === "enable" || (host.hostList.indexOf(location.host) !== -1 && force.force !== "disable")) {
+			if (force.force === "enable" || (host.hostList && host.hostList.indexOf(location.host) !== -1 && force.force !== "disable")) {
 				title = siteName[getRandomInt()];
 				document.title = title;
 				deleteIcon();
