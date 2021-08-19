@@ -145,7 +145,7 @@ body.noaccept .settings {
 .aco-header {
   display: block;
   cursor: pointer;
-  border-bottom: #333 1px solid;
+  border-bottom: #ccc 1px solid;
   width: 100%;
   height: 50px;
     font-size: 14px;
