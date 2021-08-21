@@ -11,7 +11,7 @@ chrome.tabs.query({
     if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(tabs[0].url)) {
 
 
-        chrome.storage.sync.get("accept", function(result) {
+        chrome.storage.sync.get("accept", function (result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
@@ -24,10 +24,14 @@ chrome.tabs.query({
                     chrome.tabs.sendMessage(activeId, {
                         message: 'siteNameList'
                     });
+                    chrome.runtime.sendMessage({
+                        message: 'turnon',
+                        id: activeId
+                    });
                 });
                 addMessageReceive();
                 showList();
-                chrome.storage.sync.get("force", function(force) {
+                chrome.storage.sync.get("force", function (force) {
                     switch (force.force) {
                         case "enable":
                             document.getElementById("force-header").classList.add("open");
@@ -46,8 +50,8 @@ chrome.tabs.query({
             }
 
         });
-        chrome.storage.sync.get("hostList", function(result) {
-            if(result.hostList){
+        chrome.storage.sync.get("hostList", function (result) {
+            if (result.hostList) {
                 enableHostList = result.hostList;
             }
 
@@ -58,7 +62,7 @@ chrome.tabs.query({
         document.getElementById("agreeBtn").addEventListener("click", () => {
             chrome.storage.sync.set({
                 "accept": true
-            }, function() {
+            }, function () {
                 addMessageReceive();
                 chrome.storage.sync.set({
                     "hostList": []
@@ -104,7 +108,7 @@ chrome.tabs.query({
         }, false);
 
     } else {
-        chrome.storage.sync.get("accept", function(result) {
+        chrome.storage.sync.get("accept", function (result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
@@ -132,7 +136,7 @@ function resetList() {
 }
 
 function addMessageReceive() {
-    chrome.runtime.onMessage.addListener(function(mess) {
+    chrome.runtime.onMessage.addListener(function (mess) {
         let myMessage = mess.message;
         switch (myMessage) {
             case "ThisisSiteName":
@@ -175,7 +179,7 @@ function addMessageReceive() {
 }
 
 document.getElementById("host-header").addEventListener("click", () => {
-    chrome.storage.sync.get("force", function(force) {
+    chrome.storage.sync.get("force", function (force) {
 
         if (force.force === "enable" || force.force === "disable") {
             chrome.tabs.query({}, (tabs) => {
@@ -201,7 +205,7 @@ function showList() {
     chrome.tabs.query({}, tabs => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.storage.sync.get("hostList", function(result) {
+                chrome.storage.sync.get("hostList", function (result) {
 
 
                     const host = new URL(element.url).host;
@@ -218,13 +222,16 @@ function showList() {
                         if (result.hostList && result.hostList.indexOf(host) !== -1) {
                             newElement.setAttribute("checked", true);
                         }
-                        let newLabel = document.createElement("label");
-                        newLabel.textContent = host;
-                        newLabel.setAttribute("for", host);
-                        newLabel.classList = "label-inline";
-                        newDiv.appendChild(newElement);
-                        newDiv.appendChild(newLabel);
-                        hostList.push(host);
+                        chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, activeTabs => {
+                            let activveTabUrl = new URL(activeTabs[0].url).host;
+                            let newLabel = document.createElement("label");
+                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ)" : "");
+                            newLabel.setAttribute("for", host);
+                            newLabel.classList = "label-inline";
+                            newDiv.appendChild(newElement);
+                            newDiv.appendChild(newLabel);
+                            hostList.push(host);
+                        });
                         newElement.addEventListener("click", () => {
 
                             document.getElementById("allSelect").checked = false;

@@ -31,7 +31,7 @@ let siteName = [
 	"語呂合わせで覚える日本史〜江戸時代初期〜 - 歴史は任せろ！",
 	"中世文学史 - 国語をこよなく愛しているとある人が、愛と熱意で書いているブログ",
 	"不規則変化動詞一覧 - 英語大好きマンのブログ",
-	"まだパワポにＭＳゴシック使ってるの？時代遅れです。 - ビジネスは任せろ！",
+	"まだパワポにＭＳ ゴシック使ってるの？時代遅れです。 - ビジネスは任せろ！",
 	"目からウロコの5文型習得術 - 英語大好きマンのブログ",
 	"語呂合わせで覚える日本史〜戦国時代〜 - 歴史は任せろ！",
 	"近代文学史 - 国語をこよなく愛しているとある人が、愛と熱意で書いているブログ",
@@ -132,6 +132,9 @@ chrome.runtime.onMessage.addListener(function (mes) {
 		case "changeStorage":
 			loadStorage();
 			break;
+		case "alerta":
+			alerta();
+			break;
 	}
 });
 
@@ -141,4 +144,11 @@ function loadStorage(){
 			siteName = result3.siteNameList;
 		}
 	});
+}
+
+
+
+
+function alerta() {
+	alert("a");
 }
