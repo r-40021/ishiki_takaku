@@ -4,7 +4,6 @@ chrome.runtime.sendMessage({
 }, function(response) {
     chrome.storage.sync.get("siteNameList", function(result3) {
         siteName = result3.siteNameList ? result3.siteNameList : response.list;
-        console.log(siteName);
     });
 
 
