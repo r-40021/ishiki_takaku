@@ -190,8 +190,9 @@ function showList() {
                             'active': true,
                             'lastFocusedWindow': true
                         }, activeTabs => {
+                            let targetNum = document.getElementById(host).getAttribute("target").split(",").length;
                             let activveTabUrl = new URL(activeTabs[0].url).host;
-                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ)" : "");
+                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? " と他" + (targetNum - 1) : "") + ")" : "") ;
                             newLabel.setAttribute("for", host);
                             newLabel.classList = "label-inline";
                         });
@@ -199,10 +200,10 @@ function showList() {
                         newDiv.appendChild(newLabel);
                         hostList.push(host);
                         newElement.addEventListener("click", () => {
-
+ 
                             document.getElementById("allSelect").checked = false;
                             document.getElementById("allRemove").checked = false;
-
+ 
                             if (newElement.checked) {
 
                                 enableHostList.push(newElement.getAttribute("id"));
