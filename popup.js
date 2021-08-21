@@ -3,6 +3,8 @@ let content;
 let enableHostList = [];
 let edit = true;
 
+
+
 chrome.tabs.query({
     active: true,
     lastFocusedWindow: true
@@ -11,27 +13,14 @@ chrome.tabs.query({
     if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(tabs[0].url)) {
 
 
-        chrome.storage.sync.get("accept", function (result) {
+        chrome.storage.sync.get("accept", function(result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
             } else if (result.accept === true) {
-                chrome.tabs.query({
-                    active: true,
-                    lastFocusedWindow: true
-                }, (tabs) => {
-                    let activeId = tabs[0].id;
-                    chrome.tabs.sendMessage(activeId, {
-                        message: 'siteNameList'
-                    });
-                    chrome.runtime.sendMessage({
-                        message: 'turnon',
-                        id: activeId
-                    });
-                });
-                addMessageReceive();
                 showList();
-                chrome.storage.sync.get("force", function (force) {
+                loadSiteNames()
+                chrome.storage.sync.get("force", function(force) {
                     switch (force.force) {
                         case "enable":
                             document.getElementById("force-header").classList.add("open");
@@ -50,7 +39,7 @@ chrome.tabs.query({
             }
 
         });
-        chrome.storage.sync.get("hostList", function (result) {
+        chrome.storage.sync.get("hostList", function(result) {
             if (result.hostList) {
                 enableHostList = result.hostList;
             }
@@ -62,13 +51,13 @@ chrome.tabs.query({
         document.getElementById("agreeBtn").addEventListener("click", () => {
             chrome.storage.sync.set({
                 "accept": true
-            }, function () {
-                addMessageReceive();
+            }, function() {
                 chrome.storage.sync.set({
                     "hostList": []
                 });
                 showList();
                 resetList();
+                loadSiteNames()
                 document.body.classList.remove("noaccept");
             });
         }, false);
@@ -108,7 +97,7 @@ chrome.tabs.query({
         }, false);
 
     } else {
-        chrome.storage.sync.get("accept", function (result) {
+        chrome.storage.sync.get("accept", function(result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
@@ -124,62 +113,36 @@ chrome.tabs.query({
 });
 
 function resetList() {
-    chrome.tabs.query({
-        active: true,
-        lastFocusedWindow: true
-    }, (tabs) => {
-        let activeId = tabs[0].id;
-        chrome.tabs.sendMessage(activeId, {
-            message: 'defaultNames'
-        });
-    });
-}
+    chrome.runtime.sendMessage({
+        message: 'defaultSiteName'
+    }, function(response) {
+        let defaultSiteNameList = response.list;
+        let defaultListContents = "";
+        for (let i = 0; i < defaultSiteNameList.length; i++) {
+            const value = defaultSiteNameList[i];
+            defaultListContents += (i !== defaultSiteNameList.length - 1 ? value + "\n" : value);
 
-function addMessageReceive() {
-    chrome.runtime.onMessage.addListener(function (mess) {
-        let myMessage = mess.message;
-        switch (myMessage) {
-            case "ThisisSiteName":
-                let siteNameList = mess.list;
-                let listContents = "";
-                for (let i = 0; i < siteNameList.length; i++) {
-                    const value = siteNameList[i];
-                    listContents += (i !== siteNameList.length - 1 ? value + "\n" : value);
-
-                }
-                document.getElementById("siteNames").value = listContents;
-                break;
-
-            case "ThisisDefaultName":
-                let defaultSiteNameList = mess.list;
-                let defaultListContents = "";
-                for (let i = 0; i < defaultSiteNameList.length; i++) {
-                    const value = defaultSiteNameList[i];
-                    defaultListContents += (i !== defaultSiteNameList.length - 1 ? value + "\n" : value);
-
-                }
-                if (edit) {
-                    document.getElementById("siteNames").value = defaultListContents;
-                }
-                chrome.storage.sync.set({
-                    "siteNameList": defaultSiteNameList
-                });
-                chrome.tabs.query({}, (tab) => {
-                    tab.forEach(element => {
-                        chrome.tabs.sendMessage(element.id, {
-                            message: 'changeStorage'
-                        });
-                    });
-                });
-                edit = true;
-
-                break;
         }
+        if (edit) {
+            document.getElementById("siteNames").value = defaultListContents;
+        }
+        chrome.storage.sync.set({
+            "siteNameList": defaultSiteNameList
+        });
+        chrome.tabs.query({}, (tab) => {
+            tab.forEach(element => {
+                chrome.tabs.sendMessage(element.id, {
+                    message: 'changeStorage'
+                });
+            });
+        });
+        edit = true;
     });
 }
+
 
 document.getElementById("host-header").addEventListener("click", () => {
-    chrome.storage.sync.get("force", function (force) {
+    chrome.storage.sync.get("force", function(force) {
 
         if (force.force === "enable" || force.force === "disable") {
             chrome.tabs.query({}, (tabs) => {
@@ -205,7 +168,7 @@ function showList() {
     chrome.tabs.query({}, tabs => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.storage.sync.get("hostList", function (result) {
+                chrome.storage.sync.get("hostList", function(result) {
 
 
                     const host = new URL(element.url).host;
@@ -222,16 +185,19 @@ function showList() {
                         if (result.hostList && result.hostList.indexOf(host) !== -1) {
                             newElement.setAttribute("checked", true);
                         }
-                        chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, activeTabs => {
+                        let newLabel = document.createElement("label");
+                        chrome.tabs.query({
+                            'active': true,
+                            'lastFocusedWindow': true
+                        }, activeTabs => {
                             let activveTabUrl = new URL(activeTabs[0].url).host;
-                            let newLabel = document.createElement("label");
                             newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ)" : "");
                             newLabel.setAttribute("for", host);
                             newLabel.classList = "label-inline";
-                            newDiv.appendChild(newElement);
-                            newDiv.appendChild(newLabel);
-                            hostList.push(host);
                         });
+                        newDiv.appendChild(newElement);
+                        newDiv.appendChild(newLabel);
+                        hostList.push(host);
                         newElement.addEventListener("click", () => {
 
                             document.getElementById("allSelect").checked = false;
@@ -329,3 +295,19 @@ for (let i = 0; i < acoHeader.length; i++) {
     });
 }
 
+function loadSiteNames() {
+    chrome.runtime.sendMessage({
+        message: 'defaultSiteName'
+    }, function(response) {
+        chrome.storage.sync.get("siteNameList", function(result3) {
+            let siteNameList = result3.siteNameList ? result3.siteNameList : response.list;
+            let listContents = "";
+            for (let i = 0; i < siteNameList.length; i++) {
+                const value = siteNameList[i];
+                listContents += (i !== siteNameList.length - 1 ? value + "\n" : value);
+
+            }
+            document.getElementById("siteNames").value = listContents;
+        });
+    });
+}
