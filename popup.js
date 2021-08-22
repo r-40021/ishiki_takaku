@@ -3,6 +3,8 @@ let content;
 let enableHostList = [];
 let edit = true;
 
+
+
 chrome.tabs.query({
     active: true,
     lastFocusedWindow: true
@@ -16,17 +18,9 @@ chrome.tabs.query({
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
             } else if (result.accept === true) {
-                chrome.tabs.query({
-                    active: true,
-                    lastFocusedWindow: true
-                }, (tabs) => {
-                    let activeId = tabs[0].id;
-                    chrome.tabs.sendMessage(activeId, {
-                        message: 'siteNameList'
-                    });
-                });
-                addMessageReceive();
                 showList();
+                loadSiteNames();
+                updateDialog();
                 chrome.storage.sync.get("force", function(force) {
                     switch (force.force) {
                         case "enable":
@@ -47,7 +41,7 @@ chrome.tabs.query({
 
         });
         chrome.storage.sync.get("hostList", function(result) {
-            if(result.hostList){
+            if (result.hostList) {
                 enableHostList = result.hostList;
             }
 
@@ -59,12 +53,13 @@ chrome.tabs.query({
             chrome.storage.sync.set({
                 "accept": true
             }, function() {
-                addMessageReceive();
                 chrome.storage.sync.set({
                     "hostList": []
                 });
+                updateDialog();
                 showList();
                 resetList();
+                loadSiteNames()
                 document.body.classList.remove("noaccept");
             });
         }, false);
@@ -120,59 +115,33 @@ chrome.tabs.query({
 });
 
 function resetList() {
-    chrome.tabs.query({
-        active: true,
-        lastFocusedWindow: true
-    }, (tabs) => {
-        let activeId = tabs[0].id;
-        chrome.tabs.sendMessage(activeId, {
-            message: 'defaultNames'
-        });
-    });
-}
+    chrome.runtime.sendMessage({
+        message: 'defaultSiteName'
+    }, function(response) {
+        let defaultSiteNameList = response.list;
+        let defaultListContents = "";
+        for (let i = 0; i < defaultSiteNameList.length; i++) {
+            const value = defaultSiteNameList[i];
+            defaultListContents += (i !== defaultSiteNameList.length - 1 ? value + "\n" : value);
 
-function addMessageReceive() {
-    chrome.runtime.onMessage.addListener(function(mess) {
-        let myMessage = mess.message;
-        switch (myMessage) {
-            case "ThisisSiteName":
-                let siteNameList = mess.list;
-                let listContents = "";
-                for (let i = 0; i < siteNameList.length; i++) {
-                    const value = siteNameList[i];
-                    listContents += (i !== siteNameList.length - 1 ? value + "\n" : value);
-
-                }
-                document.getElementById("siteNames").value = listContents;
-                break;
-
-            case "ThisisDefaultName":
-                let defaultSiteNameList = mess.list;
-                let defaultListContents = "";
-                for (let i = 0; i < defaultSiteNameList.length; i++) {
-                    const value = defaultSiteNameList[i];
-                    defaultListContents += (i !== defaultSiteNameList.length - 1 ? value + "\n" : value);
-
-                }
-                if (edit) {
-                    document.getElementById("siteNames").value = defaultListContents;
-                }
-                chrome.storage.sync.set({
-                    "siteNameList": defaultSiteNameList
-                });
-                chrome.tabs.query({}, (tab) => {
-                    tab.forEach(element => {
-                        chrome.tabs.sendMessage(element.id, {
-                            message: 'changeStorage'
-                        });
-                    });
-                });
-                edit = true;
-
-                break;
         }
+        if (edit) {
+            document.getElementById("siteNames").value = defaultListContents;
+        }
+        chrome.storage.sync.set({
+            "siteNameList": defaultSiteNameList
+        });
+        chrome.tabs.query({}, (tab) => {
+            tab.forEach(element => {
+                chrome.tabs.sendMessage(element.id, {
+                    message: 'changeStorage'
+                });
+            });
+        });
+        edit = true;
     });
 }
+
 
 document.getElementById("host-header").addEventListener("click", () => {
     chrome.storage.sync.get("force", function(force) {
@@ -184,7 +153,10 @@ document.getElementById("host-header").addEventListener("click", () => {
                 });
                 tabs.forEach(element => {
                     if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                        chrome.tabs.reload(element.id, false);
+                        chrome.runtime.sendMessage({
+                            message: 'ajax',
+                            id: element.id
+                        });
                     }
                 });
 
@@ -219,17 +191,24 @@ function showList() {
                             newElement.setAttribute("checked", true);
                         }
                         let newLabel = document.createElement("label");
-                        newLabel.textContent = host;
-                        newLabel.setAttribute("for", host);
-                        newLabel.classList = "label-inline";
+                        chrome.tabs.query({
+                            'active': true,
+                            'lastFocusedWindow': true
+                        }, activeTabs => {
+                            let targetNum = document.getElementById(host).getAttribute("target").split(",").length;
+                            let activveTabUrl = new URL(activeTabs[0].url).host;
+                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? "と他" + (targetNum - 1) + "個" : "") + ")" : "") ;
+                            newLabel.setAttribute("for", host);
+                            newLabel.classList = "label-inline";
+                        });
                         newDiv.appendChild(newElement);
                         newDiv.appendChild(newLabel);
                         hostList.push(host);
                         newElement.addEventListener("click", () => {
-
+ 
                             document.getElementById("allSelect").checked = false;
                             document.getElementById("allRemove").checked = false;
-
+ 
                             if (newElement.checked) {
 
                                 enableHostList.push(newElement.getAttribute("id"));
@@ -237,6 +216,7 @@ function showList() {
                             } else {
 
                                 enableHostList.splice(enableHostList.indexOf(newElement.getAttribute("id")), 1);
+                               
                             }
                             chrome.storage.sync.set({
                                 "hostList": enableHostList
@@ -245,7 +225,10 @@ function showList() {
 
                             const tabIds = document.getElementById(host).getAttribute("target").split(",");
                             for (let i = 0; i < tabIds.length; i++) {
-                                chrome.tabs.reload(Number(tabIds[i]), false);
+                                chrome.runtime.sendMessage({
+                                    message: 'ajax',
+                                    id: tabIds[i]
+                                });
                             }
 
 
@@ -280,7 +263,10 @@ document.getElementById("allSelect").addEventListener("click", () => {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.tabs.reload(element.id, false);
+                chrome.runtime.sendMessage({
+                    message: 'ajax',
+                    id: element.id
+                });
             }
         });
 
@@ -294,7 +280,10 @@ document.getElementById("allRemove").addEventListener("click", () => {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.tabs.reload(element.id, false);
+                chrome.runtime.sendMessage({
+                    message: 'ajax',
+                    id: element.id
+                });
             }
         });
 
@@ -318,6 +307,37 @@ for (let i = 0; i < acoHeader.length; i++) {
                 }
             }
             element.classList.add("open");
+        }
+    });
+}
+
+function loadSiteNames() {
+    chrome.runtime.sendMessage({
+        message: 'defaultSiteName'
+    }, function(response) {
+        chrome.storage.sync.get("siteNameList", function(result3) {
+            let siteNameList = result3.siteNameList ? result3.siteNameList : response.list;
+            let listContents = "";
+            for (let i = 0; i < siteNameList.length; i++) {
+                const value = siteNameList[i];
+                listContents += (i !== siteNameList.length - 1 ? value + "\n" : value);
+
+            }
+            document.getElementById("siteNames").value = listContents;
+        });
+    });
+}
+
+function updateDialog(){
+    chrome.storage.local.get("update12", function(result) {
+        console.log(result.update12)
+        if (!result.update12){
+            document.getElementById("update").style.display ="block";
+            chrome.storage.local.set({
+                "update12": true
+            });
+        } else {
+            document.getElementById("update").remove();
         }
     });
 }
