@@ -20,17 +20,7 @@ chrome.tabs.query({
             } else if (result.accept === true) {
                 showList();
                 loadSiteNames();
-                chrome.storage.local.get("update12", function(result) {
-                    console.log(result.update12)
-                    if (!result.update12){
-                        document.getElementById("update").style.display ="block";
-                        chrome.storage.local.set({
-                            "update12": true
-                        });
-                    } else {
-                        document.getElementById("update").remove();
-                    }
-                });
+                updateDialog();
                 chrome.storage.sync.get("force", function(force) {
                     switch (force.force) {
                         case "enable":
@@ -66,6 +56,7 @@ chrome.tabs.query({
                 chrome.storage.sync.set({
                     "hostList": []
                 });
+                updateDialog();
                 showList();
                 resetList();
                 loadSiteNames()
@@ -334,5 +325,19 @@ function loadSiteNames() {
             }
             document.getElementById("siteNames").value = listContents;
         });
+    });
+}
+
+function updateDialog(){
+    chrome.storage.local.get("update12", function(result) {
+        console.log(result.update12)
+        if (!result.update12){
+            document.getElementById("update").style.display ="block";
+            chrome.storage.local.set({
+                "update12": true
+            });
+        } else {
+            document.getElementById("update").remove();
+        }
     });
 }
