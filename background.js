@@ -51,7 +51,7 @@ let siteName = [
     "超絶神コミュニケーション術！ - ビジネスは任せろ！"
 ];
 
-chrome.runtime.onMessage.addListener(function(mes, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (mes, sender, sendResponse) {
     let myMessage = mes.message;
     switch (myMessage) {
         case "defaultSiteName":
@@ -60,5 +60,72 @@ chrome.runtime.onMessage.addListener(function(mes, sender, sendResponse) {
                 list: siteName
             });
             break;
+        case "ajax":
+            chrome.scripting.executeScript(
+                {
+                    target: { tabId: Number(mes.id) },
+                    func: ajax
+                }, () => {
+                    chrome.tabs.sendMessage(Number(mes.id), {
+                        message: 'reload'
+                    });
+                    console.log("send")
+                });
+            break;
     }
 });
+
+function ajax() {
+    
+    console.log("ajax");
+    // urlを加工し、キャッシュされないurlにする。
+    url = location.href + '?ver=' + new Date().getTime();
+
+    // ajaxオブジェクト生成
+    var ajax = new XMLHttpRequest;
+
+    // ajax通信open
+    ajax.open('GET', url, true);
+
+    // ajax返信時の処理
+    
+    ajax.onload = function () {
+        if (this.status != 200) {
+            location.reload();
+        } else {
+            document.title = trim(ajax.responseText,"<title>","</title>");
+            let newIcon = document.createElement("link");
+            newIcon.setAttribute("rel", "icon");
+            newIcon.setAttribute("type", "image/png");
+            newIcon.setAttribute("href", "/favicon.ico");
+            newIcon.classList = "newIcon";
+            let parent = document.head;
+            parent.appendChild(newIcon);
+            let text = trim(ajax.responseText, "<head>", "</head>");
+            while (/\<script/.test(text)) {
+                let start = text.indexOf("<script");
+                let end = text.indexOf("</script>") + "</script>".length;
+                let before = text.slice(0,start);
+                let after = text.slice(end, text.length);
+                text = before + after;
+            }
+            console.log(text)
+            if (text) {
+                document.head.innerHTML += text;   
+            } else {
+                location.reload();
+            }
+        }
+
+    };
+
+
+
+    // ajax開始
+    ajax.send(null);
+    function trim(string,start,end){
+        const startIndex = string.indexOf(start) + start.length;
+        const endIndex = string.indexOf(end);
+        return string.substr(startIndex, endIndex - startIndex);
+    }
+}

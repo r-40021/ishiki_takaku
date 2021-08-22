@@ -192,7 +192,7 @@ function showList() {
                         }, activeTabs => {
                             let targetNum = document.getElementById(host).getAttribute("target").split(",").length;
                             let activveTabUrl = new URL(activeTabs[0].url).host;
-                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? " と他" + (targetNum - 1) : "") + ")" : "") ;
+                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? "と他" + (targetNum - 1) + "個" : "") + ")" : "") ;
                             newLabel.setAttribute("for", host);
                             newLabel.classList = "label-inline";
                         });
@@ -211,6 +211,7 @@ function showList() {
                             } else {
 
                                 enableHostList.splice(enableHostList.indexOf(newElement.getAttribute("id")), 1);
+                               
                             }
                             chrome.storage.sync.set({
                                 "hostList": enableHostList
@@ -219,7 +220,10 @@ function showList() {
 
                             const tabIds = document.getElementById(host).getAttribute("target").split(",");
                             for (let i = 0; i < tabIds.length; i++) {
-                                chrome.tabs.reload(Number(tabIds[i]), false);
+                                chrome.runtime.sendMessage({
+                                    message: 'ajax',
+                                    id: tabIds[i]
+                                });
                             }
 
 

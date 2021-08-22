@@ -1,4 +1,7 @@
-let siteName;
+content();
+let siteName,title,observer;
+function content(){
+    console.log("start")
 chrome.runtime.sendMessage({
     message: 'defaultSiteName'
 }, function(response) {
@@ -8,7 +11,7 @@ chrome.runtime.sendMessage({
 
 
 
-    let title;
+
     chrome.storage.sync.get("accept", function(result) {
 
         if (result.accept) {
@@ -31,7 +34,7 @@ chrome.runtime.sendMessage({
                             childList: true,
                             attributes: true,
                         };
-                        const observer = new MutationObserver(function() {
+                        observer = new MutationObserver(function() {
                             observer.disconnect();
                             document.title = title;
                             deleteIcon();
@@ -47,6 +50,7 @@ chrome.runtime.sendMessage({
 
     });
 });
+}
 
 function getRandomInt() {
     return Math.floor(Math.random() * siteName.length);
@@ -71,7 +75,7 @@ function deleteIcon() {
         if (metaDiscre[i]) {
             let proper = metaDiscre[i].getAttribute('rel');
             if (proper && proper.indexOf("icon") !== -1) {
-                metaDiscre[i].setAttribute("href", chrome.runtime.getURL("/favicon.png"));
+                metaDiscre[i].setAttribute("href", "");
             }
         }
     }
@@ -82,8 +86,13 @@ chrome.runtime.onMessage.addListener(function(mes) {
         case "changeStorage":
             loadStorage();
             break;
-        case "alerta":
-            alerta();
+        case "reload":
+            console.log("ok")
+            if(observer){
+            observer.disconnect();
+            }
+            deleteIcon();
+            content();
             break;
     }
 });
@@ -94,11 +103,4 @@ function loadStorage() {
             siteName = result3.siteNameList;
         }
     });
-}
-
-
-
-
-function alerta() {
-    alert("a");
 }
