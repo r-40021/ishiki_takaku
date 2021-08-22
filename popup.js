@@ -19,7 +19,18 @@ chrome.tabs.query({
                 document.body.classList.add("noaccept");
             } else if (result.accept === true) {
                 showList();
-                loadSiteNames()
+                loadSiteNames();
+                chrome.storage.local.get("update12", function(result) {
+                    console.log(result.update12)
+                    if (!result.update12){
+                        document.getElementById("update").style.display ="block";
+                        chrome.storage.local.set({
+                            "update12": true
+                        });
+                    } else {
+                        document.getElementById("update").remove();
+                    }
+                });
                 chrome.storage.sync.get("force", function(force) {
                     switch (force.force) {
                         case "enable":
@@ -151,7 +162,10 @@ document.getElementById("host-header").addEventListener("click", () => {
                 });
                 tabs.forEach(element => {
                     if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                        chrome.tabs.reload(element.id, false);
+                        chrome.runtime.sendMessage({
+                            message: 'ajax',
+                            id: element.id
+                        });
                     }
                 });
 
@@ -258,7 +272,10 @@ document.getElementById("allSelect").addEventListener("click", () => {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.tabs.reload(element.id, false);
+                chrome.runtime.sendMessage({
+                    message: 'ajax',
+                    id: element.id
+                });
             }
         });
 
@@ -272,7 +289,10 @@ document.getElementById("allRemove").addEventListener("click", () => {
     chrome.tabs.query({}, (tabs) => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.tabs.reload(element.id, false);
+                chrome.runtime.sendMessage({
+                    message: 'ajax',
+                    id: element.id
+                });
             }
         });
 

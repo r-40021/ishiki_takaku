@@ -55,7 +55,6 @@ chrome.runtime.onMessage.addListener(function (mes, sender, sendResponse) {
     let myMessage = mes.message;
     switch (myMessage) {
         case "defaultSiteName":
-            console.log("recieve")
             sendResponse({
                 list: siteName
             });
@@ -69,7 +68,6 @@ chrome.runtime.onMessage.addListener(function (mes, sender, sendResponse) {
                     chrome.tabs.sendMessage(Number(mes.id), {
                         message: 'reload'
                     });
-                    console.log("send")
                 });
             break;
     }
@@ -77,7 +75,6 @@ chrome.runtime.onMessage.addListener(function (mes, sender, sendResponse) {
 
 function ajax() {
     
-    console.log("ajax");
     // urlを加工し、キャッシュされないurlにする。
     url = location.href + '?ver=' + new Date().getTime();
 
@@ -88,7 +85,10 @@ function ajax() {
     ajax.open('GET', url, true);
 
     // ajax返信時の処理
-    
+    ajax.onprogress = function () {
+        document.title = "Loading..."
+    }
+
     ajax.onload = function () {
         if (this.status != 200) {
             location.reload();
@@ -109,7 +109,6 @@ function ajax() {
                 let after = text.slice(end, text.length);
                 text = before + after;
             }
-            console.log(text)
             if (text) {
                 document.head.innerHTML += text;   
             } else {

@@ -1,7 +1,6 @@
 content();
 let siteName,title,observer;
 function content(){
-    console.log("start")
 chrome.runtime.sendMessage({
     message: 'defaultSiteName'
 }, function(response) {
@@ -87,7 +86,6 @@ chrome.runtime.onMessage.addListener(function(mes) {
             loadStorage();
             break;
         case "reload":
-            console.log("ok")
             if(observer){
             observer.disconnect();
             }
