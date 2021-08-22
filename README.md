@@ -12,9 +12,9 @@ Chrome のタブの Web サイト名を意識高く。
 
 ![SNSを見ていても、タブは意識が高い人](https://user-images.githubusercontent.com/75155258/126740641-94e63b43-0cc4-4295-ac60-b3fefa9a9b60.png)
 
-![タブのタイトルを変更可能](https://user-images.githubusercontent.com/75155258/129733618-1e2bf002-7ca6-47e6-97a8-43796ab2dd27.png)
+![タブのタイトルを変更可能](https://user-images.githubusercontent.com/75155258/130345207-af95e5d3-9e6e-478e-a8a3-68832f759e6c.png)
 
-![真面目モード、不真面目モードを簡単に切替可能](https://user-images.githubusercontent.com/75155258/129733636-aab47b99-1e9e-455f-a390-45835f368421.png)
+![真面目モード、不真面目モードを簡単かつ柔軟にに切替可能](https://user-images.githubusercontent.com/75155258/130345212-5703602c-b4ba-4867-80fc-a40e045ba3c2.png)
 
 
 # プライバシーについて
