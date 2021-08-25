@@ -94,12 +94,12 @@ function ajax() {
             location.reload();
         } else {
             document.title = trim(ajax.responseText,"<title>","</title>");
+            let parent = document.head;
             let newIcon = document.createElement("link");
             newIcon.setAttribute("rel", "icon");
             newIcon.setAttribute("type", "image/png");
             newIcon.setAttribute("href", "/favicon.ico");
             newIcon.classList = "newIcon";
-            let parent = document.head;
             parent.appendChild(newIcon);
             let text = trim(ajax.responseText, "<head>", "</head>");
             while (/\<script/.test(text)) {
@@ -110,7 +110,7 @@ function ajax() {
                 text = before + after;
             }
             if (text) {
-                document.head.innerHTML += text;   
+                parent.insertAdjacentHTML('beforeend', text); 
             } else {
                 location.reload();
             }
