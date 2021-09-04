@@ -25,5 +25,5 @@ Chrome のタブの Web サイト名を意識高く。
 安心してご利用ください。
 
 # ライセンス表示
-- [Milligram](https://github.com/milligram/milligram/blob/master/license) &copy; CJ Patoilo <cjpatoilo@gmail.com>
+- [Milligram](https://github.com/milligram/milligram/blob/master/license) &copy; CJ Patoilo
 - [Bootstrap Icons](https://github.com/twbs/icons/blob/main/LICENSE.md) &copy; 2019-2020 The Bootstrap Authors
