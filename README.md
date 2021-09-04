@@ -23,3 +23,7 @@ Chrome のタブの Web サイト名を意識高く。
 また、そのことを証明するために、このようにコードをすべて公開しています。
 
 安心してご利用ください。
+
+# ライセンス表示
+- [Milligram](https://github.com/milligram/milligram/blob/master/license) &copy; CJ Patoilo <cjpatoilo@gmail.com>
+- [Bootstrap Icons](https://github.com/twbs/icons/blob/main/LICENSE.md) &copy; 2019-2020 The Bootstrap Authors
