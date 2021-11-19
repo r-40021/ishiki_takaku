@@ -1,6 +1,6 @@
 {
-  "name": "タブの表示名一発変更！",
-  "description": "タブに表示されるWebサイトの名称を簡単かつ柔軟に変更できます。",
+  "name": "Rename Tab",
+  "description": "タブに表示されるWebサイトの名称を、簡単かつ柔軟に変更することができます。",
   "version": "2.0.0",
   "manifest_version": 3,
   "permissions": [

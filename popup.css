@@ -42,7 +42,25 @@ input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   font-weight: bold;
+  background-size: 200% 100%;
+  background-image: linear-gradient(120deg, #cfa0fa 0%, #5eaaf5 100%);
+  border: 0;
+  background-position: 100%;
+  transition:  background-position .6s ease-out;
 }
+.button:hover,
+button:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover,
+input[type="submit"]:hover,
+.button:focus,
+button:focus,
+input[type="button"]:focus,
+input[type="reset"]:focus,
+input[type="submit"]:focus{
+  background-position: 0%;
+}
+
 .label-inline {
   width: 90%;
 }
