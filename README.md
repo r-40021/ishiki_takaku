@@ -1,10 +1,9 @@
-# タブの表示名を変更できるChrome拡張機能
-![プロモーション](https://user-images.githubusercontent.com/75155258/142623128-b2117063-728b-418b-9982-4a13cdcd76c1.png)
-
-
+# Rename Tab
+タブの表示名を変更できるChrome拡張機能
 
 Chrome のタブに表示される Web サイト名を簡単に変更しよう！
 
+![プロモーション](https://user-images.githubusercontent.com/75155258/142623128-b2117063-728b-418b-9982-4a13cdcd76c1.png)
 
 # 簡単に紹介
 ![タブの名前を変更](https://user-images.githubusercontent.com/75155258/142622746-509be41b-000f-41d0-bc38-6ec63db665e8.png)
