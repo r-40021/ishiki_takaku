@@ -1,83 +1,78 @@
 body:not(.noaccept) {
   width: 700px;
 }
+
 body {
   padding: 3rem 0.8rem;
   user-select: none;
   -webkit-user-select: none;
 }
+
 * {
-  font-family: -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI",
-    "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, Meiryo,
-    "Noto Sans JP", sans-serif;
+  font-family: -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, Meiryo, "Noto Sans JP", sans-serif;
   font-weight: 400;
 }
+
 @font-face {
   font-family: YuGothicM;
   font-weight: normal;
-  src: local("YuGothic-Medium"), local("Yu Gothic Medium"),
-    local("YuGothic-Regular"); /* Windows8.1ではMediumがないのでRegularを指定 */
+  src: local("YuGothic-Medium"), local("Yu Gothic Medium"), local("YuGothic-Regular");
+  /* Windows8.1ではMediumがないのでRegularを指定 */
 }
+
 @font-face {
   font-family: YuGothicM;
   font-weight: bold;
   src: local("YoGothic-Bold"), local("Yu Gothic");
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-li {
+
+h1, h2, h3, h4, h5, h6, p, li {
   font-weight: 400;
 }
+
 a {
   cursor: pointer;
 }
-.button,
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+
+.button, button, input[type="button"], input[type="reset"], input[type="submit"] {
   font-weight: bold;
   background-size: 200% 100%;
   background-image: linear-gradient(120deg, #cfa0fa 0%, #5eaaf5 100%);
   border: 0;
   background-position: 100%;
-  transition:  background-position .6s ease-out;
+  transition: background-position .6s ease-out;
 }
-.button:hover,
-button:hover,
-input[type="button"]:hover,
-input[type="reset"]:hover,
-input[type="submit"]:hover,
-.button:focus,
-button:focus,
-input[type="button"]:focus,
-input[type="reset"]:focus,
-input[type="submit"]:focus{
+
+.button:hover, button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover, .button:focus, button:focus, input[type="button"]:focus, input[type="reset"]:focus, input[type="submit"]:focus {
   background-position: 0%;
+}
+
+input:focus-visible {
+  outline: #cfa0fa 4px solid;
 }
 
 .label-inline {
   width: 90%;
 }
+
 .checkboxWrapper {
   display: flex;
   width: 100%;
   align-items: baseline;
 }
+
 .checkboxWrapper input {
   width: 1.5rem;
 }
+
 .checkboxWrapper .label-inline {
   flex: 1;
 }
+
 .checkboxWrapper:hover {
   opacity: 0.5;
 }
+
 .allTab.button {
   width: auto;
   height: 2rem;
@@ -85,18 +80,23 @@ input[type="submit"]:focus{
   margin-bottom: 2rem;
   padding-left: 2rem;
 }
+
 .accept {
   text-align: center;
 }
+
 .first {
   display: none;
 }
+
 .icons {
   margin-right: 0.3em;
 }
+
 .icons.center {
   vertical-align: middle;
 }
+
 .head {
   display: flex;
   width: 100%;
@@ -104,19 +104,22 @@ input[type="submit"]:focus{
   align-items: center;
   padding: 0 0.5em;
 }
+
 .title {
   padding-bottom: 4px;
   box-sizing: border-box;
   text-indent: 0.15em;
 }
+
 .title::after {
-  content:  "";
+  content: "";
   display: block;
   margin-top: .2em;
   height: 8px;
   background-color: #e0c3fc;
   background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
 }
+
 .dark {
   justify-content: center;
   align-items: center;
@@ -133,40 +136,46 @@ input[type="submit"]:focus{
   text-align: center;
   display: none;
 }
+
 textarea {
   color: #606c76;
+  resize: vertical;
 }
+textarea:focus-visible {
+  outline: #cfa0fa 4px solid;
+}
+
 body.noaccept {
   width: 400px;
 }
+
 body.noaccept .first {
   display: block;
 }
+
 body.noaccept .settings {
   display: none;
 }
 
 .force {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1em 0 .1em;
-    padding-left: 2em;
-    width: 100%;
-}
-.force .label-inline{
-    width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1em 0 .1em;
+  padding-left: 2em;
+  width: 100%;
 }
 
-
-
+.force .label-inline {
+  width: auto;
+}
 
 .aco {
-    padding: 0 1.0rem;
+  padding: 0 1.0rem;
 }
 
 .aco .row, .aco .column {
-    padding: 0;
+  padding: 0;
 }
 
 .aco-header {
@@ -175,40 +184,63 @@ body.noaccept .settings {
   border-bottom: #ccc 1px solid;
   width: 100%;
   height: 50px;
-    font-size: 14px;
+  font-size: 14px;
   line-height: 50px;
+  transition:  color .2s ease-out;
+  appearance: none;
+  background: none;
+  text-align: start;
+  padding: 0;
+  color: inherit;
+}
+.aco-header:focus {
+  background: none;
+  color: inherit;
+  border-bottom: #ccc 1px solid;
+}
+.aco-header:focus-visible {
+  outline: #cfa0fa 4px solid;
+}
+.aco-header:hover {
+  background: none;
+  border-bottom: #ccc 1px solid;
+  color: #be7dfa;
 }
 
 .aco-body {
-    border: 0;
-    overflow: hidden;
-    padding: 0;
-    max-height: 0;
-    transition: max-height .2s ease-out, border .2s ease-out, padding .2s ease-out;
+  border: 0;
+  overflow: hidden;
+  padding: 0;
+  max-height: 0;
+  transition: max-height .2s ease-out, border .2s ease-out, padding .2s ease-out;
 }
+
 .aco-body .column {
-    padding: 1em .5em;
+  padding: 1em .5em;
 }
-.aco-header.open + .aco-body {
-    max-height: 100vh;
+
+.aco-header.open+.aco-body {
+  max-height: 100vh;
 }
-.aco-header > .arrow {
-    transform: rotate(0deg);
-    vertical-align: middle;
-    transition: transform .2s ease-out;
-    margin-left: .7em;
-    margin-right: .3em;
+
+.aco-header>.arrow {
+  transform: rotate(0deg);
+  vertical-align: middle;
+  transition: transform .2s ease-out;
+  margin-left: .7em;
+  margin-right: .7em;
 }
-.aco-header.open > .arrow {
-    transform: rotate(180deg);
+
+.aco-header.open>.arrow {
+  transform: rotate(180deg);
 }
-.update{
+
+.update {
   background-color: #fbefee;
   padding: 1em;
   margin-bottom: 1em;
   display: none;
 }
-
 
 @media (min-width: 40rem) {
   .row {

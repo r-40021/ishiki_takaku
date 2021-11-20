@@ -13,7 +13,7 @@ chrome.tabs.query({
     if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(tabs[0].url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(tabs[0].url)) {
 
 
-        chrome.storage.sync.get("accept", function(result) {
+        chrome.storage.sync.get("accept", function (result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
@@ -21,26 +21,26 @@ chrome.tabs.query({
                 showList();
                 loadSiteNames();
                 updateDialog();
-                chrome.storage.sync.get("force", function(force) {
+                chrome.storage.sync.get("force", function (force) {
                     switch (force.force) {
                         case "enable":
-                            document.getElementById("force-header").classList.add("open");
+                            openAco(document.getElementById("force-header"));
                             document.getElementById("allSelect").checked = true;
                             break;
                         case "disable":
-                            document.getElementById("force-header").classList.add("open");
+                            openAco(document.getElementById("force-header"));
                             document.getElementById("allRemove").checked = true;
                             break;
                         case "none":
-                            document.getElementById("force-header").classList.remove("open");
-                            document.getElementById("host-header").classList.add("open");
+                            closeAco(document.getElementById("force-header"));
+                            openAco(document.getElementById("host-header"));
                             break;
                     }
                 });
             }
 
         });
-        chrome.storage.sync.get("hostList", function(result) {
+        chrome.storage.sync.get("hostList", function (result) {
             if (result.hostList) {
                 enableHostList = result.hostList;
             }
@@ -52,7 +52,7 @@ chrome.tabs.query({
         document.getElementById("agreeBtn").addEventListener("click", () => {
             chrome.storage.sync.set({
                 "accept": true
-            }, function() {
+            }, function () {
                 chrome.storage.sync.set({
                     "hostList": []
                 });
@@ -99,7 +99,7 @@ chrome.tabs.query({
         }, false);
 
     } else {
-        chrome.storage.sync.get("accept", function(result) {
+        chrome.storage.sync.get("accept", function (result) {
 
             if (result.accept !== true) {
                 document.body.classList.add("noaccept");
@@ -117,7 +117,7 @@ chrome.tabs.query({
 function resetList() {
     chrome.runtime.sendMessage({
         message: 'defaultSiteName'
-    }, function(response) {
+    }, function (response) {
         let defaultSiteNameList = response.list;
         let defaultListContents = "";
         for (let i = 0; i < defaultSiteNameList.length; i++) {
@@ -144,7 +144,7 @@ function resetList() {
 
 
 document.getElementById("host-header").addEventListener("click", () => {
-    chrome.storage.sync.get("force", function(force) {
+    chrome.storage.sync.get("force", function (force) {
 
         if (force.force === "enable" || force.force === "disable") {
             chrome.tabs.query({}, (tabs) => {
@@ -173,10 +173,13 @@ function showList() {
     chrome.tabs.query({}, tabs => {
         tabs.forEach(element => {
             if (!/^(?=.*https:\/\/chrome\.google\.com)(?=.*\/webstore\/).*$/.test(element.url) && /http\:\/\/|https\:\/\/|file\:\/\//.test(element.url)) {
-                chrome.storage.sync.get("hostList", function(result) {
+                chrome.storage.sync.get("hostList", function (result) {
 
 
                     const host = new URL(element.url).host;
+
+                    if (!host) return; // ドメインが空白ならスキップ
+
                     if (hostList.indexOf(host) === -1) {
 
                         let newDiv = document.createElement("div");
@@ -197,7 +200,7 @@ function showList() {
                         }, activeTabs => {
                             let targetNum = document.getElementById(host).getAttribute("target").split(",").length;
                             let activveTabUrl = new URL(activeTabs[0].url).host;
-                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? "と他" + (targetNum - 1) + "個" : "") + ")" : "") ;
+                            newLabel.textContent = host + (host === activveTabUrl ? " (現在のタブ" + (targetNum > 1 ? "と他" + (targetNum - 1) + "個" : "") + ")" : "");
                             newLabel.setAttribute("for", host);
                             newLabel.classList = "label-inline";
                         });
@@ -205,10 +208,10 @@ function showList() {
                         newDiv.appendChild(newLabel);
                         hostList.push(host);
                         newElement.addEventListener("click", () => {
- 
+
                             document.getElementById("allSelect").checked = false;
                             document.getElementById("allRemove").checked = false;
- 
+
                             if (newElement.checked) {
 
                                 enableHostList.push(newElement.getAttribute("id"));
@@ -216,7 +219,7 @@ function showList() {
                             } else {
 
                                 enableHostList.splice(enableHostList.indexOf(newElement.getAttribute("id")), 1);
-                               
+
                             }
                             chrome.storage.sync.set({
                                 "hostList": enableHostList
@@ -296,17 +299,9 @@ for (let i = 0; i < acoHeader.length; i++) {
     element.addEventListener("click", () => {
 
         if (element.classList.contains("open")) {
-            element.classList.remove("open");
+            closeAco(element);
         } else {
-
-            if (element.getAttribute("name")) {
-                const bothMenu = document.getElementsByName(element.getAttribute("name"));
-
-                for (let i = 0; i < bothMenu.length; i++) {
-                    bothMenu[i].classList.remove("open");
-                }
-            }
-            element.classList.add("open");
+            openAco(element);
         }
     });
 }
@@ -314,8 +309,8 @@ for (let i = 0; i < acoHeader.length; i++) {
 function loadSiteNames() {
     chrome.runtime.sendMessage({
         message: 'defaultSiteName'
-    }, function(response) {
-        chrome.storage.sync.get("siteNameList", function(result3) {
+    }, function (response) {
+        chrome.storage.sync.get("siteNameList", function (result3) {
             let siteNameList = result3.siteNameList ? result3.siteNameList : response.list;
             let listContents = "";
             for (let i = 0; i < siteNameList.length; i++) {
@@ -328,11 +323,11 @@ function loadSiteNames() {
     });
 }
 
-function updateDialog(){
-    chrome.storage.local.get("update12", function(result) {
+function updateDialog() {
+    chrome.storage.local.get("update12", function (result) {
         console.log(result.update12)
-        if (!result.update12){
-            document.getElementById("update").style.display ="block";
+        if (!result.update12) {
+            document.getElementById("update").style.display = "block";
             chrome.storage.local.set({
                 "update12": true
             });
@@ -341,3 +336,29 @@ function updateDialog(){
         }
     });
 }
+
+function openAco(elem) {
+    if (elem.getAttribute("name")) {
+        const bothMenu = document.getElementsByName(elem.getAttribute("name"));
+
+        for (let i = 0; i < bothMenu.length; i++) {
+            closeAco(bothMenu[i]);
+        }
+    }
+    elem.nextElementSibling.style.display = "block";
+    elem.classList.add("open");
+}
+
+function closeAco(elem) {
+    elem.classList.remove("open");
+    elem.nextElementSibling.addEventListener("transitionend", handleTransitionEnd);
+}
+
+function handleTransitionEnd(e) {
+    const element = e.target;
+    if (element.className !== "aco-body") return;
+    console.dir(element)
+    element.style.display = "none";
+    element.removeEventListener("transitionend", handleTransitionEnd);
+}
+ 
