@@ -326,12 +326,11 @@ function loadSiteNames() {
 }
 
 function updateDialog() {
-    chrome.storage.local.get("update12", function (result) {
-        console.log(result.update12)
-        if (!result.update12) {
+    chrome.storage.local.get("update201", function (result) {
+        if (!result.update201) {
             document.getElementById("update").style.display = "block";
             chrome.storage.local.set({
-                "update12": true
+                "update201": true
             });
         } else {
             document.getElementById("update").remove();
@@ -339,10 +338,10 @@ function updateDialog() {
     });
 }
 
+let hiddenTimeOut;
+
 function openAco(elem) {
-    console.log("open")
-    elem.removeEventListener("transitionend", handleTransitionEnd);
-    elem.removeEventListener("transitioncancel", handleTransitionCancel);
+    clearTimeout(hiddenTimeOut);
     if (elem.getAttribute("name")) {
         const bothMenu = document.getElementsByName(elem.getAttribute("name"));
         for (let i = 0; i < bothMenu.length; i++) {
@@ -354,10 +353,12 @@ function openAco(elem) {
 }
 
 function closeAco(elem) {
-    console.log("close")
     elem.classList.remove("open");
     elem.nextElementSibling.addEventListener("transitionend", handleTransitionEnd);
     elem.nextElementSibling.addEventListener("transitioncancel", handleTransitionCancel);
+    hiddenTimeOut = setTimeout(() => {
+        handleTransitionEnd({target: elem.nextElementSibling});
+    }, 200);
 }
 
 function handleTransitionEnd(e) {
@@ -366,7 +367,6 @@ function handleTransitionEnd(e) {
     element.removeEventListener("transitionend", handleTransitionEnd);
     element.removeEventListener("transitioncancel", handleTransitionCancel);
     element.style.display = "none";
-    console.dir(element)
 }
 
 function handleTransitionCancel(e) {
@@ -374,6 +374,5 @@ function handleTransitionCancel(e) {
     if (element.className !== "aco-body") return;
     element.removeEventListener("transitionend", handleTransitionEnd);
     element.removeEventListener("transitioncancel", handleTransitionCancel);
-    console.log("cancel")
 }
  

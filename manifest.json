@@ -1,7 +1,7 @@
 {
   "name": "Rename Tab",
   "description": "タブに表示されるWebサイトの名称を、簡単かつ柔軟に変更することができます。",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "manifest_version": 3,
   "permissions": [
     "storage",

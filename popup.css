@@ -9,7 +9,7 @@ body {
 }
 
 * {
-  font-family: -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, Meiryo, "Noto Sans JP", sans-serif;
+  font-family: -apple-system, blinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Arial", "Roboto", "Hiragino Kaku Gothic ProN", YuGothicM, YuGothic, "Yu Gothic", Meiryo, "Noto Sans JP", sans-serif;
   font-weight: 400;
 }
 
