@@ -33,6 +33,9 @@ h1, h2, h3, h4, h5, h6, p, li {
 a {
   cursor: pointer;
 }
+a:focus-visible {
+  outline: #cfa0fa 4px solid;
+}
 
 .button, button, input[type="button"], input[type="reset"], input[type="submit"] {
   font-weight: bold;

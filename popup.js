@@ -32,7 +32,6 @@ chrome.tabs.query({
                             document.getElementById("allRemove").checked = true;
                             break;
                         case "none":
-                            closeAco(document.getElementById("force-header"));
                             openAco(document.getElementById("host-header"));
                             break;
                     }
@@ -65,7 +64,10 @@ chrome.tabs.query({
         }, false);
 
 
-        document.getElementById("resetBtn").addEventListener("click", resetList, false);
+        document.getElementById("resetBtn").addEventListener("click", (e)=>{
+            e.preventDefault();
+            resetList();
+        }, false);
         let nameContent;
         document.getElementById("siteNames").addEventListener("input", () => {
             nameContent = document.getElementById("siteNames").value;
@@ -338,11 +340,13 @@ function updateDialog() {
 }
 
 function openAco(elem) {
+    console.log("open")
+    elem.removeEventListener("transitionend", handleTransitionEnd);
+    elem.removeEventListener("transitioncancel", handleTransitionCancel);
     if (elem.getAttribute("name")) {
         const bothMenu = document.getElementsByName(elem.getAttribute("name"));
-
         for (let i = 0; i < bothMenu.length; i++) {
-            closeAco(bothMenu[i]);
+            if (bothMenu[i].classList.contains("open") && bothMenu[i].id !== elem.id) closeAco(bothMenu[i]);
         }
     }
     elem.nextElementSibling.style.display = "block";
@@ -350,15 +354,26 @@ function openAco(elem) {
 }
 
 function closeAco(elem) {
+    console.log("close")
     elem.classList.remove("open");
     elem.nextElementSibling.addEventListener("transitionend", handleTransitionEnd);
+    elem.nextElementSibling.addEventListener("transitioncancel", handleTransitionCancel);
 }
 
 function handleTransitionEnd(e) {
     const element = e.target;
     if (element.className !== "aco-body") return;
-    console.dir(element)
-    element.style.display = "none";
     element.removeEventListener("transitionend", handleTransitionEnd);
+    element.removeEventListener("transitioncancel", handleTransitionCancel);
+    element.style.display = "none";
+    console.dir(element)
+}
+
+function handleTransitionCancel(e) {
+    const element = e.target;
+    if (element.className !== "aco-body") return;
+    element.removeEventListener("transitionend", handleTransitionEnd);
+    element.removeEventListener("transitioncancel", handleTransitionCancel);
+    console.log("cancel")
 }
  
